@@ -4,7 +4,6 @@ import add from '../add.png'
 import close from '../close.png'
 
 const Heading = (props) => {
-    console.log(props)
     var source = null;
     if (props.history.page == "landing") {
         source = add;

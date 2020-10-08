@@ -9,7 +9,7 @@ export default class CreateArticle extends React.Component {
             data: [],
             imageUrl:null
         }
-        console.log(props)
+       
         this.handleSubmit=this.handleSubmit.bind(this);
         this.imageChange=this.imageChange.bind(this);
     }
@@ -31,7 +31,6 @@ export default class CreateArticle extends React.Component {
             imageUrl,
             url
         }
-        console.log(data);
     }else{
         alert("Values are missing")
     }
