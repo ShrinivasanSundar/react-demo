@@ -9,40 +9,32 @@ export default class Landing extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data: []
+            data: [],
+            delete:"delete"
         }
-        this.afterCall=this.afterCall.bind(this);
         this.onSearch=this.onSearch.bind(this);
-     
     }
+
 
     componentDidMount() {
         Axios.get("http://localhost:2600/api/article/get-all").then(res => {
            
-            this.setState({data:[...this.state.data,...res.data.data]})
+            this.setState({data:[...res.data.data]})
         }).catch(err => {
             console.log(err)
             alert(err)
         })
     }
 
-
-    afterCall=()=>{
-        if(this.state.data.length>0){
-          this.state.data.map(article=>{
-                return(<div className="article-block">
-                <div className="left-art">
-                <div className="article-title">{article.title}</div>
-                <div className="article-desc">{article}</div>
-                </div>
-                <div className="right-art">
-                <div className="article-img">{article}</div>
-                </div>
-                </div>
-                )
-            })
-        }
+    deleteOnClick=(value)=>{
+        Axios.delete(`http://localhost:2600/api/article?id=${value}`).then(res => {
+           this.componentDidMount();
+        }).catch(err => {
+            console.log(err)
+            alert(err)
+        })
     }
+
     onClickArticle(url){
         window.open(url, "_blank")
     
@@ -66,13 +58,19 @@ export default class Landing extends React.Component {
                 {(this.state.data.length>0)?
                   this.state.data.map((article,i)=>{
                     
-                    return(<div key={i+"article-block"} className="article-block" onClick={this.onClickArticle.bind(this,article.url)}>
-                    <div key={i+"left-art"} className="left-art">
+                    return(
+                    <div key={i+"container"} className="container">
+                    <button key={i+"delete"} className={this.state.delete}
+                    onClick={this.deleteOnClick.bind(this,article._id)}/>
+                    <div key={i+"article-block"} className="article-block" onClick={this.onClickArticle.bind(this,article.url)}
+                    >
+                    <div key={i+"left-art"} className="left-art" >
                     <div key={i+"article-title"} className="article-title">{article.title}</div>
                     <div key={i+"article-desc"} className="article-desc">{article.description}</div>
                     </div>
                     <div key={i+"right-art"} className="right-art">
                     <img key={i+"article-image"} className="article-image" src={article.imageUrl}></img>
+                    </div>
                     </div>
                     </div>
                     )}):<div/>}

@@ -1,10 +1,12 @@
 import React from "react"
 import Heading from "./Heading"
 import "../styles/create.css"
+import Axios from "axios";
 
 export default class CreateArticle extends React.Component {
     constructor(props) {
         super(props);
+        console.log(props)
         this.state = {
             data: [],
             imageUrl:null
@@ -24,13 +26,19 @@ export default class CreateArticle extends React.Component {
         const description=e.target.elements.description.value;
         const imageUrl=e.target.elements.image.value;
         const url=e.target.elements.url.value;
-        if(title&&description&&imageUrl&&url){
+        if(title&&description){
         var data={
             title,
             description,
             imageUrl,
             url
         }
+        Axios.post("http://localhost:2600/api/article",data).then(res=>{
+            console.log("Data added successfully");
+            this.props.history.push("/dashboard")
+        }).catch(err=>{
+            alert(err)
+        })
     }else{
         alert("Values are missing")
     }
